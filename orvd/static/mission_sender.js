@@ -1,4 +1,7 @@
-document.getElementById('mission-sender-submit').onclick = submit;
+document.getElementById('mission-sender-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    submit();
+});
 
 let key = null;
 
