@@ -269,8 +269,9 @@ const displayFeatureInfo = function (pixel, target) {
     return feature;
   });
   if (feature) {
-    info.style.left = pixel[0] + 'px';
-    info.style.top = pixel[1] + 'px';
+    const mapRect = map.getTargetElement().getBoundingClientRect();
+    info.style.left = `${pixel[0] + mapRect.left + 10}px`;
+    info.style.top = `${pixel[1] + mapRect.top + 10}px`;
     if (feature !== currentFeature) {
       info.style.visibility = 'visible';
       info.innerText = feature.get('description') || 'Нет описания';
@@ -404,7 +405,7 @@ async function mission_decision() {
 
 async function revised_mission_decision(decision) {
   const revisedMissionBlock = document.getElementById('revised-mission-block');
-  revisedMissionBlock.style.visibility = 'hidden';
+  revisedMissionBlock.style.display = 'none';
   const query_str = `admin/revise_mission_decision?id=${active_id}&decision=${decision}&token=${access_token}`;
   let mission_resp = await fetch(query_str);
   let mission_text = await mission_resp.text();
@@ -698,7 +699,7 @@ async function getAllData() {
                 } else if (uavData.mission_state == '2') {
                     document.getElementById('mission_checkbox').checked = false;
                     const revisedMissionBlock = document.getElementById('revised-mission-block');
-                    revisedMissionBlock.style.visibility = 'visible';
+                    revisedMissionBlock.style.display = 'block';
                 } else {
                     document.getElementById('mission_checkbox').checked = false;
                 }

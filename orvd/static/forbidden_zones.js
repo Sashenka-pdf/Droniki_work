@@ -287,8 +287,9 @@ const displayFeatureInfo = function (pixel, target) {
             }
         });
     if (feature && feature.get('description')) {
-        info.style.left = pixel[0] + 'px';
-        info.style.top = pixel[1] + 'px';
+        const mapRect = map.getTargetElement().getBoundingClientRect();
+        info.style.left = `${pixel[0] + mapRect.left + 10}px`;
+        info.style.top = `${pixel[1] + mapRect.top + 10}px`;
         if (feature !== currentFeature) {
         info.style.visibility = 'visible';
         info.innerText = feature.get('description') || 'Нет описания';

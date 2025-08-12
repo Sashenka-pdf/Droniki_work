@@ -6,9 +6,9 @@ document.getElementById('submit-telemetry-csv').onclick = submitTelemetryCsv;
 let chartInstance = null;
 
 function toggleContainers(logsVisible, chartVisible, eventsVisible) {
-    document.getElementById('logs-container').classList.toggle('hidden', !logsVisible);
-    document.getElementById('speed-chart-container').classList.toggle('hidden', !chartVisible);
-    document.getElementById('events-container').classList.toggle('hidden', !eventsVisible);
+    document.getElementById('logs-container').style.display = logsVisible ? 'block' : 'none';
+    document.getElementById('speed-chart-container').style.display = chartVisible ? 'block' : 'none';
+    document.getElementById('events-container').style.display = eventsVisible ? 'block' : 'none';
 }
 
 
@@ -82,7 +82,7 @@ async function submitEvents() {
 
         if (events.length > 0) {
             let table = document.createElement('table');
-            table.className = 'log-table'; // Add a class for styling
+            table.className = 'table table-striped table-bordered';
             let thead = document.createElement('thead');
             let tbody = document.createElement('tbody');
             let headRow = document.createElement('tr');

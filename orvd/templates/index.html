@@ -5,24 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Панель оператора</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
-<body>
-    <header>
-        <h1>Панель оператора</h1>
-    </header>
-
-    <nav>
-        <ul>
-            <li><a href="admin" class="nav-button">• ОРВД</a></li>
-            <li><a href="admin/forbidden_zones" class="nav-button">• Запрещенные зоны</a></li>
-            <li><a href="mission_sender" class="nav-button">• Mission sender</a></li>
-            <li><a href="logs" class="nav-button">• Инфо</a></li>
-        </ul>
-    </nav>
-
-    <footer>
-      <p></p>
-    </footer>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-10">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h1 class="card-title text-center">Панель оператора</h1>
+                        <div class="list-group">
+                            <a href="admin" class="list-group-item list-group-item-action">• ОРВД</a>
+                            <a href="admin/forbidden_zones" class="list-group-item list-group-item-action">• Запрещенные зоны</a>
+                            <a href="mission_sender" class="list-group-item list-group-item-action">• Mission sender</a>
+                            <a href="logs" class="list-group-item list-group-item-action">• Инфо</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
