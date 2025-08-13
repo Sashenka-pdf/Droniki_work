@@ -196,10 +196,29 @@ const tileLayer = new ol.layer.Tile({
   })
 });
 
+const fieldLayer = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'static/resources/field.json',
+    format: new ol.format.GeoJSON()
+  }),
+  style: new ol.style.Style({
+    fill: new ol.style.Fill({
+      color: 'rgba(0, 191, 255, 0.5)'
+    }),
+    stroke: new ol.style.Stroke({
+      color: 'rgba(0, 191, 255, 1)',
+      width: 2
+    })
+  }),
+  updateWhileAnimating: true, 
+  updateWhileInteracting: true,
+});
+
 const map = new ol.Map({
   target: 'map',
   layers: [
-    tileLayer
+    tileLayer,
+    fieldLayer
   ],
   view: new ol.View({
     center: place,
@@ -212,8 +231,7 @@ const styles = {
   'Polygon': new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'red',
-      lineDash: [4],
-      width: 3,
+      width: 3
     }),
     fill: new ol.style.Fill({
       color: 'rgba(255, 0, 0, 0.1)',
@@ -243,14 +261,16 @@ async function createGeoJSONLayer() {
     source: new ol.source.Vector({
       features: new ol.format.GeoJSON().readFeatures(geojsonObject),
     }),
-    style: styleFunction
+    style: styleFunction,
+    updateWhileAnimating: true, 
+    updateWhileInteracting: true,
   });
   
   geoJSONLayer.getSource().getFeatures().forEach(feature => {
     feature.set('description', `Запрещенная зона: ${feature.get('name')}`);
   });
   
-  map.addLayer(geoJSONLayer);
+  map.getLayers().insertAt(map.getLayers().getLength() - 1, geoJSONLayer);
 }
 
 const markers = new ol.layer.Vector({
