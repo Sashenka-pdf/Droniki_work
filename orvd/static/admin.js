@@ -96,7 +96,8 @@ let uav_style = new ol.style.Style({
     anchor: [0.5, 0.5],
     src: 'static/resources/vehicle_marker.svg',
     scale: 0.25
-  })
+  }),
+  zIndex: 9999
 });
 
 let inactive_uav_style = new ol.style.Style({
@@ -105,7 +106,8 @@ let inactive_uav_style = new ol.style.Style({
     src: 'static/resources/vehicle_marker.svg',
     scale: 0.25,
     opacity: 0.6
-  })
+  }),
+  zIndex: 9999
 });
 
 let home_marker_style = new ol.style.Style({
@@ -599,7 +601,8 @@ function add_or_update_vehicle_marker(id, lat, lon, alt, azimuth, speed) {
       src: 'static/resources/vehicle_marker.svg',
       scale: 0.25,
       rotation: rotationInRadians
-    })
+    }),
+    zIndex: 9999
   });
   
   let inactiveVehicleStyle = new ol.style.Style({
@@ -609,7 +612,8 @@ function add_or_update_vehicle_marker(id, lat, lon, alt, azimuth, speed) {
       scale: 0.25,
       opacity: 0.6,
       rotation: rotationInRadians
-    })
+    }),
+    zIndex: 9999
   });
   
   if (!vehicles[id]) {
@@ -724,13 +728,13 @@ async function getAllData() {
                     document.getElementById('mission_checkbox').checked = false;
                 }
 
-                document.getElementById("delay").innerHTML = "Delay: " + uavData.delay;
+                document.getElementById("delay").innerHTML = "Задержка: " + uavData.delay;
             }
 
             if (uavData.telemetry) {
                 const { lat, lon, alt, azimuth, dop, sats, speed } = uavData.telemetry;
-                document.getElementById("dop").innerHTML = "DOP: " + dop;
-                document.getElementById("sats").innerHTML = "SATS: " + sats;
+                document.getElementById("dop").innerHTML = "HDOP: " + dop;
+                document.getElementById("sats").innerHTML = "Спутники: " + sats;
                 add_or_update_vehicle_marker(id, lat, lon, alt, azimuth, speed);
                 if (id === active_id) {
                     map.getView().setCenter([lon, lat]);
