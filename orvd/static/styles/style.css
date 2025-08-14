@@ -77,3 +77,24 @@ html, body {
     background-color: #f2f2f2;
     color: black;
 }
+
+#infopanel {
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#infopanel .note {
+  font-weight: bold;
+}
+
+#infopanel small {
+  color: #444 !important;
+}
+
+#infopanel hr {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-top: 1px solid #555;
+}

@@ -53,6 +53,10 @@ let current_state = null;
 let forbidden_zones_display = false;
 let trajectoryFeature = null;
 
+function formatNumber(num, precision = 6) {
+    return Number(parseFloat(num).toFixed(precision)).toString();
+}
+
 async function copyToClipboard(textToCopy) {
   if (navigator.clipboard && window.isSecureContext) {
     await navigator.clipboard.writeText(textToCopy);
@@ -735,10 +739,15 @@ async function getAllData() {
 
             if (uavData.telemetry) {
                 const { lat, lon, alt, azimuth, dop, sats, speed } = uavData.telemetry;
-                document.getElementById("dop").innerHTML = "HDOP: " + dop;
-                document.getElementById("sats").innerHTML = "Спутники: " + sats;
                 add_or_update_vehicle_marker(id, lat, lon, alt, azimuth, speed);
                 if (id === active_id) {
+                  document.getElementById("lat").innerHTML = "Lat: " + formatNumber(lat, 6);
+                  document.getElementById("lon").innerHTML = "Lon: " + formatNumber(lon, 6);
+                  document.getElementById("alt").innerHTML = "Alt: " + formatNumber(alt, 2);
+                  document.getElementById("heading").innerHTML = "HDG: " + formatNumber(azimuth, 2);
+                  document.getElementById("speed").innerHTML = "SPD: " + formatNumber(speed, 2);
+                  document.getElementById("dop").innerHTML = "HDOP: " + formatNumber(dop, 2);
+                  document.getElementById("sats").innerHTML = "Спутники: " + sats;
                     map.getView().setCenter([lon, lat]);
                 }
             }
