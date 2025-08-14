@@ -319,6 +319,22 @@ map.on('pointermove', function (evt) {
 });
 
 map.on('click', function (evt) {
+  const feature = map.forEachFeatureAtPixel(evt.pixel, function (f) {
+    return f;
+  });
+
+  if (feature) {
+    const featureId = feature.getId();
+    if (featureId && typeof featureId === 'string' && featureId.startsWith('uav')) {
+      const droneId = featureId.substring(3);
+      if (droneId !== active_id) {
+        const id_select = document.getElementById("id_select");
+        id_select.value = droneId;
+        change_active_id(droneId);
+      }
+    }
+  }
+
   displayFeatureInfo(evt.pixel, evt.originalEvent.target);
 });
 
