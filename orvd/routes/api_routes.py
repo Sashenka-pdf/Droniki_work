@@ -17,7 +17,7 @@ from handlers.admin_handlers import (
     admin_auth_handler, arm_decision_handler, force_disarm_handler,
     force_disarm_all_handler, get_state_handler, get_mission_handler,
     get_telemetry_handler, get_waiter_number_handler,
-    mission_decision_handler, admin_kill_switch_handler, get_id_list_handler,
+    mission_decision_handler, admin_kill_switch_handler, get_id_list_handler, get_last_events_handler,
     get_mission_state_handler, change_fly_accept_handler,
     get_forbidden_zone_handler, get_forbidden_zones_handler,
     get_forbidden_zones_names_handler, set_forbidden_zone_handler,
@@ -617,6 +617,31 @@ def get_id_list():
     """
     token = request.args.get('token')
     return authorized_request(handler_func=get_id_list_handler, token=token)
+
+
+@bp.route(AdminRoute.GET_LAST_EVENTS)
+def get_last_events():
+    """
+    Получает последние события.
+    ---
+    tags:
+      - admin
+    parameters:
+      - name: token
+        in: query
+        type: string
+        required: true
+        description: Токен аутентификации.
+    responses:
+      200:
+        description: JSON-массив с событиями.
+        schema:
+          type: array
+          items:
+            type: string
+    """
+    token = request.args.get('token')
+    return authorized_request(handler_func=get_last_events_handler, token=token)
 
 
 @bp.route(AdminRoute.CHANGE_FLY_ACCEPT)

@@ -438,6 +438,7 @@ def save_events_handler(id: str, log_message: str, **kwargs):
         str: OK в случае успешного сохранения.
     """
     try:
+        context.events_queue.append(log_message)
         save_event(uav_id=id, log_message=log_message)
         save_logs_handler(id=id, log=log_message)
     except Exception as e:

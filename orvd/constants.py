@@ -49,6 +49,7 @@ class MQTTTopic:
     NMISSION_REQUEST = 'api/nmission/request/{id}'
     ARM_REQUEST = 'api/arm/request/{id}'
     EVENTS = 'api/events/{id}'
+    RFID = 'api/rfid/{id}'
     
     # sendable
     PING = 'ping/{id}'
@@ -90,6 +91,7 @@ class AdminRoute:
     GET_TELEMETRY = '/admin/get_telemetry'
     GET_WAITER_NUMBER = '/admin/get_waiter_number'
     GET_ID_LIST = '/admin/get_id_list'
+    GET_LAST_EVENTS = '/admin/get_last_events'
     CHANGE_FLY_ACCEPT = '/admin/change_fly_accept'
     GET_FORBIDDEN_ZONES = '/admin/get_forbidden_zones'
     GET_FORBIDDEN_ZONE = '/admin/get_forbidden_zone'

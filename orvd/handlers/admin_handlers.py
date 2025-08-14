@@ -619,3 +619,15 @@ def set_change_forbidden_zones_coords_handler(lat_A: str, lon_A: str, lat_B: str
         context.change_forbidden_zones_C = {}
         
     return OK
+
+
+def get_last_events_handler():
+    """
+    Обрабатывает запрос на получение последних событий.
+
+    Returns:
+        json: JSON-массив с последними событиями.
+    """
+    events = list(context.events_queue)
+    context.events_queue.clear()
+    return jsonify(events)

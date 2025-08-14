@@ -1,5 +1,6 @@
 import logging
 import os
+from collections import deque
 from dataclasses import dataclass, field
 
 @dataclass
@@ -21,7 +22,8 @@ class Context:
     change_forbidden_zones_A: dict = field(default_factory=dict)
     change_forbidden_zones_B: dict = field(default_factory=dict)
     change_forbidden_zones_C: dict = field(default_factory=dict)
-
+    events_queue: deque = field(default_factory=lambda: deque(maxlen=100))
+ 
     def __post_init__(self):
         def _get_coords(env_var):
             value = os.getenv(env_var)
