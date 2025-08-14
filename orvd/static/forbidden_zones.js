@@ -1,5 +1,5 @@
 const TILES_URL = "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}";
-const TILES_LOCAL_PATH = "static/resources/tiles";
+const TILES_LOCAL_PATH = "/static/resources/tiles";
 
 ol.proj.useGeographic();
 const place = [27.85731575, 60.0026278];
@@ -38,7 +38,7 @@ const tileLayer = new ol.layer.Tile({
 
 const fieldLayer = new ol.layer.Vector({
   source: new ol.source.Vector({
-    url: 'static/resources/field.json',
+    url: '/static/resources/field.json',
     format: new ol.format.GeoJSON()
   }),
   style: new ol.style.Style({
