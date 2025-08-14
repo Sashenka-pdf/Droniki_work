@@ -720,9 +720,10 @@ async function getAllData() {
         }
 
         // Update Waiters
-        document.getElementById("waiters").innerHTML = "Ожидают: " + data.waiters;
-        document.getElementById('arm').disabled = !(parseInt(data.waiters) > 0);
-        document.getElementById('disarm').disabled = !(parseInt(data.waiters) > 0);
+        document.getElementById("waiters").innerHTML = "Ожидают: " + data.waiters.length;
+        const isWaitingForArm = data.waiters.includes(active_id);
+        document.getElementById('arm').disabled = !isWaitingForArm;
+        document.getElementById('disarm').disabled = !isWaitingForArm;
 
         // Update UAV Data
         for (const id in data.uav_data) {

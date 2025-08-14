@@ -521,7 +521,7 @@ def get_all_data_handler():
     uav_entities = Uav.query.order_by(Uav.created_date).all()
     all_data['ids'] = [uav.id for uav in uav_entities]
 
-    all_data['waiters'] = str(len(context.arm_queue))
+    all_data['waiters'] = list(context.arm_queue)
 
     all_data['uav_data'] = {}
     for uav in uav_entities:
