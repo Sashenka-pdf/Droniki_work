@@ -564,7 +564,9 @@ async function get_mission(id) {
         const lon = parseFloat(mission_list[idx][2]);
         const alt = mission_list[idx][3];
         if (idx < mission_list.length - 1 && mission_list[idx+1][0] == 'S') {
-          add_marker(lat, lon, alt, 'servo');              
+          add_marker(lat, lon, alt, 'servo');
+        } else if (idx < mission_list.length - 2 && mission_list[idx+1][0] == 'D' && mission_list[idx+2][0] == 'S') {
+          add_marker(lat, lon, alt, 'servo');
         } else if (idx < mission_list.length - 1 && mission_list[idx+1][0] == 'D') {
           add_marker(lat, lon, alt, 'delay');
         }
