@@ -14,7 +14,8 @@ from utils import (
     get_sha256_hex, get_new_polygon_feature, compute_and_save_forbidden_zones_delta
 )
 from .mqtt_handlers import (
-    mqtt_publish_flight_state, mqtt_publish_forbidden_zones, mqtt_publish_ping, mqtt_send_mission, mqtt_publish_connection_status
+    mqtt_publish_flight_state, mqtt_publish_forbidden_zones, mqtt_publish_ping,
+    mqtt_send_mission, mqtt_publish_connection_status, mqtt_publish_arm_response
 )
 
 
@@ -55,10 +56,18 @@ def arm_decision_handler(id: str, decision: int):
     if not uav_entity:
         return NOT_FOUND
     elif id in context.arm_queue:
-        uav_entity.is_armed = True if decision == ARMED else False
+        if decision == ARMED:
+            uav_entity.is_armed = True
+            uav_entity.state = 'В полете'
+        else:
+            uav_entity.is_armed = False
+            uav_entity.state = 'В сети'
         commit_changes()
         context.arm_queue.remove(id)
-        return f'$Arm: {decision}'
+        flush()
+        mqtt_publish_flight_state(id)
+        mqtt_publish_arm_response(id)
+        return OK
     else:
         return '$Arm: -1'
 

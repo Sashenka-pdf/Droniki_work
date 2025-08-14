@@ -72,3 +72,19 @@ def mqtt_send_mission(id: str, *args, **kwargs):
 def mqtt_publish_connection_status(*args, **kwargs):
     message = str(context.flight_info_response)
     mqtt.publish_message(MQTTTopic.CONNECTION_STATUS, message)
+
+def mqtt_publish_arm_response(id: str, *args, **kwargs):
+    if not context.flight_info_response:
+        return
+    uav_entity = get_entity_by_key(Uav, id)
+    if not uav_entity:
+        return
+    else:
+        if uav_entity.is_armed:
+            decision = '0' # ARMED
+        else:
+            decision = '1' # DISARMED
+            
+    message = f'$Arm {decision}$Delay {uav_entity.delay}'
+    message = f'{message}#{hex(sign(message, KeyGroup.ORVD))[2:]}'
+    mqtt.publish_message(MQTTTopic.ARM_RESPONSE.format(id=id), message)

@@ -56,7 +56,7 @@ def arm_request(client, userdata, msg, **kwargs):
                             query_str=f"{APIRoute.ARM}?id={id}", key_group=f"{KeyGroup.KOS}{id}", sig=payload['sig'], id=id)
         if not context.flight_info_response:
             return
-        if len(response) == 2 and response[1] == 200:
+        if len(response) == 2 and response[1] == 200 and response[0] is not None:
             mqtt.publish_message(MQTTTopic.ARM_RESPONSE.format(id=id), response[0])
     except Exception as e:
         print(f"Error handling mission message: {e}")
