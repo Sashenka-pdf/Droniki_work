@@ -6,6 +6,8 @@
 
 #include "../include/flight_controller.h"
 #include "../../shared/include/ipc_messages_logger.h"
+#include "../../shared/include/ipc_messages_periphery_controller.h"
+#include "../../shared/include/ipc_messages_server_connector.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -262,6 +264,7 @@ int parseAreas(char* str) {
         if (nameLen > AREA_NAME_MAX_LEN)
             nameLen = AREA_NAME_MAX_LEN;
         strncpy(areas[i].name, str, nameLen);
+        areas[i].name[nameLen] = '\0';
         str = nameEnd + 1;
         int32_t pointNum;
         if (!parseInt(str, pointNum, 0)) {
@@ -801,5 +804,64 @@ uint32_t parseDelay(char* response) {
     }
 
     logEntry("Failed to parse delay until next session: setting it to 1s", ENTITY_NAME, LogLevel::LOG_WARNING);
+    return 1;
+}
+
+int requestRecognition() {
+    std::string image;
+    if (!takePicture(image) || !image.length()) {
+        logEntry("Failed to take a picture", ENTITY_NAME, LogLevel::LOG_WARNING);
+        return 0;
+    }
+
+    std::string publication = "image=";
+    publication.append(image);
+    if (!publishMessage("api/image/request", publication.c_str())) {
+        logEntry("Failed to send an image to AI server", ENTITY_NAME, LogLevel::LOG_WARNING);
+        return 0;
+    }
+
+    return 1;
+}
+
+int getRecognitionResponse(char* tag, int32_t& alt) {
+    strcpy(tag, "");
+    alt = 0;
+
+    char response[1024] = {0};
+    receiveSubscription("api/image/response/", response, 1024);
+    if (!strcmp(response, ""))
+        return 0;
+
+    char* tagStart = strstr(response, "result=");
+    if (!tagStart) {
+        logEntry("Failed to parse AI server response", ENTITY_NAME, LogLevel::LOG_WARNING);
+        return 0;
+    }
+    tagStart += strlen("result=");
+    char* tagEnd = strstr(tagStart, "&");
+    if (!tagEnd) {
+        logEntry("Failed to parse AI server response", ENTITY_NAME, LogLevel::LOG_WARNING);
+        return 0;
+    }
+    tagEnd[0] = '\0';
+    if (strcmp(tagStart, "NONE")) {
+        strcpy(tag, tagStart);
+        return 1;
+    }
+    tagEnd += 1;
+
+    strcpy(tag, "NONE");
+    char* altStart = strstr(tagEnd, "rec_alt=");
+    if (!altStart) {
+        logEntry("Failed to parse AI server response", ENTITY_NAME, LogLevel::LOG_WARNING);
+        return 0;
+    }
+    altStart += strlen("rec_alt=");
+    char* altEnd = strstr(altStart, "&");
+    if (altEnd)
+        altEnd[0] = '\0';
+    if (strcmp(altStart, "NONE"))
+        alt = atoi(altStart);
     return 1;
 }
